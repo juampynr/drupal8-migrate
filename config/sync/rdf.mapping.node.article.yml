@@ -12,41 +12,51 @@ id: node.article
 targetEntityType: node
 bundle: article
 types:
-  - 'schema:Article'
+  - 'sioc:Item'
+  - 'foaf:Document'
 fieldMappings:
+  field_image:
+    properties:
+      - 'og:image'
+      - 'rdfs:seeAlso'
+    mapping_type: rel
+  field_tags:
+    properties:
+      - 'dc:subject'
+    mapping_type: rel
   title:
     properties:
-      - 'schema:name'
+      - 'dc:title'
   created:
     properties:
-      - 'schema:dateCreated'
+      - 'dc:date'
+      - 'dc:created'
+    datatype: 'xsd:dateTime'
     datatype_callback:
       callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
   changed:
     properties:
-      - 'schema:dateModified'
+      - 'dc:modified'
+    datatype: 'xsd:dateTime'
     datatype_callback:
       callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
   body:
     properties:
-      - 'schema:text'
+      - 'content:encoded'
   uid:
     properties:
-      - 'schema:author'
-  comment:
-    properties:
-      - 'schema:comment'
+      - 'sioc:has_creator'
     mapping_type: rel
+  name:
+    properties:
+      - 'foaf:name'
   comment_count:
     properties:
-      - 'schema:interactionCount'
+      - 'sioc:num_replies'
+    datatype: 'xsd:integer'
+  last_activity:
+    properties:
+      - 'sioc:last_activity_date'
+    datatype: 'xsd:dateTime'
     datatype_callback:
-      callable: 'Drupal\rdf\SchemaOrgDataConverter::interactionCount'
-      arguments:
-        interaction_type: UserComments
-  field_image:
-    properties:
-      - 'schema:image'
-  field_tags:
-    properties:
-      - 'schema:about'
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'

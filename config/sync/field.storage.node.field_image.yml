@@ -1,5 +1,5 @@
 uuid: 30d2293f-b37e-4f93-9da3-36b58c26189e
-langcode: en
+langcode: und
 status: true
 dependencies:
   module:
@@ -15,11 +15,7 @@ type: image
 settings:
   uri_scheme: public
   default_image:
-    uuid: null
-    alt: ''
-    title: ''
-    width: null
-    height: null
+    uuid: ''
   target_type: file
   display_field: false
   display_default: false

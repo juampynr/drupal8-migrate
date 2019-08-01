@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.comment_node_page
     - node.type.page
   module:
+    - comment
     - path
     - text
 _core:
@@ -16,14 +18,20 @@ bundle: page
 mode: default
 content:
   body:
+    weight: -4
     type: text_textarea_with_summary
-    weight: 31
-    region: content
     settings:
       rows: 9
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+    region: content
+  comment_node_page:
+    type: comment_default
+    weight: 20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   created:
     type: datetime_timestamp
     weight: 10

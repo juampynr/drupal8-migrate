@@ -13,17 +13,16 @@ field_name: field_tags
 entity_type: node
 bundle: article
 label: Tags
-description: 'Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio"'
+description: 'Enter a comma-separated list of words to describe your content.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:taxonomy_term'
   handler_settings:
-    target_bundles:
-      tags: tags
     sort:
       field: _none
-    auto_create: true
+    target_bundles:
+      tags: tags
+  handler: 'default:taxonomy_term'
 field_type: entity_reference

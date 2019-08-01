@@ -8,7 +8,7 @@ dependencies:
     - bartik
 _core:
   default_config_hash: za-39d5WDUg6XvbyqSnuVYEeq6QM4qKJxW8MnoAha5A
-id: bartik_search
+id: bartik_search_form
 theme: bartik
 region: sidebar_first
 weight: -1
@@ -16,7 +16,7 @@ provider: null
 plugin: search_form_block
 settings:
   id: search_form_block
-  label: Search
+  label: ''
   provider: search
-  label_display: visible
+  label_display: '0'
 visibility: {  }

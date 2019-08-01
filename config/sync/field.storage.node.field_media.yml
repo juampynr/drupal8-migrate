@@ -1,0 +1,23 @@
+uuid: c54f5c29-c452-4e1b-9f12-1836fa400984
+langcode: und
+status: true
+dependencies:
+  module:
+    - file
+    - node
+id: node.field_media
+field_name: field_media
+entity_type: node
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: public
+  target_type: file
+module: file
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

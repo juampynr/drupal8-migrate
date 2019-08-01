@@ -5,12 +5,15 @@ dependencies:
   config:
     - field.field.node.article.body
     - field.field.node.article.comment
+    - field.field.node.article.comment_node_article
     - field.field.node.article.field_image
+    - field.field.node.article.field_media
     - field.field.node.article.field_tags
     - image.style.thumbnail
     - node.type.article
   module:
     - comment
+    - file
     - image
     - path
     - text
@@ -22,20 +25,26 @@ bundle: article
 mode: default
 content:
   body:
+    weight: -4
     type: text_textarea_with_summary
-    weight: 1
-    region: content
     settings:
       rows: 9
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+    region: content
   comment:
     type: comment_default
     weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
+  comment_node_article:
+    type: comment_default
+    weight: 20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   created:
     type: datetime_timestamp
     weight: 10
@@ -43,22 +52,29 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_image:
+    weight: -1
     type: image_image
-    weight: 4
-    region: content
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
-  field_tags:
-    type: entity_reference_autocomplete_tags
-    weight: 3
     region: content
+  field_media:
+    weight: 0
+    type: file_generic
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    region: content
+  field_tags:
+    weight: -4
+    type: entity_reference_autocomplete
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   path:
     type: path
     weight: 30
