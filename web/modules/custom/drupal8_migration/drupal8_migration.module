@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Drupal 8 migration module.
+ */
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function drupal8_migration_migration_plugins_alter(array &$migrations) {
+  // Skip copying files as we use Stage File Proxy.
+  if (isset($migrations['d7_file'])) {
+    $migrations['d7_file']['process']['uri'] = 'uri';
+  }
+}

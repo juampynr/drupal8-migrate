@@ -1,0 +1,7 @@
+name: Drupal 8 migration
+type: module
+description: Adjustments for the migration
+package: Migrate
+core: 8.x
+dependencies:
+  - drupal:migrate
