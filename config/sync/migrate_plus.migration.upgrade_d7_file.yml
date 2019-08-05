@@ -36,10 +36,8 @@ process:
       plugin: urlencode
   uri:
     -
-      plugin: file_copy
-      source:
-        - '@source_full_path'
-        - uri
+      plugin: get
+      source: uri
   filemime:
     -
       plugin: get
