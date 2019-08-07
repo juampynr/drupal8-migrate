@@ -51,8 +51,8 @@ jobs:
           command: |
             vendor/bin/drush sql-dump > scripts/database/dumps/drupal8.sql
             vendor/bin/drush sql-dump --database=drupal7 > scripts/database/dumps/drupal7.sql
-            vendor/bin/robo database:build-image master ${CIRCLE_BRANCH}
-            vendor/bin/robo database:push-image master ${CIRCLE_BRANCH}
+            vendor/bin/robo database:build-image ${CIRCLE_BRANCH}
+            vendor/bin/robo database:push-image ${CIRCLE_BRANCH}
 
 workflows:
   version: 2
