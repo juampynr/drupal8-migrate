@@ -81,6 +81,11 @@
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
             }
+        },
+        "patches": {
+            "drupal/migrate_tools": {
+                "The \"--limit\" option does not accept a value.": "https://www.drupal.org/files/issues/2019-02-05/migrate-tools_fix-drush-options_3024399-23.patch"
+            }
         }
     }
 }
