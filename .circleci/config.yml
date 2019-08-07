@@ -51,7 +51,7 @@ jobs:
           command: |
             vendor/bin/drush sql-dump > scripts/database/dumps/drupal8.sql
             vendor/bin/drush sql-dump --database=drupal7 > scripts/database/dumps/drupal7.sql
-            docker login -u="$QUAY_USERNAME_V2" -p="$QUAY_PASSWORD_V2" quay.io
+            docker login -u="$QUAY_USERNAME" -p="$QUAY_PASSWORD" quay.io
             vendor/bin/robo database:build-image ${CIRCLE_BRANCH}
             vendor/bin/robo database:push-image ${CIRCLE_BRANCH}
 
