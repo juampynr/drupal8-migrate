@@ -69,8 +69,8 @@ class RoboFile extends \Robo\Tasks {
 
     $collection->addTask($this->taskExec('set -x'))
       ->addTask($this->taskExec('VER="18.09.3"'))
-      ->addTask($this->taskExec('curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz'))
-      ->addTask($this->taskExec('tar -xz -C /tmp -f /tmp/docker-$VER.tgz'))
+      ->addTask($this->taskExec('curl -L -o /tmp/docker-' . getenv('VER') . '.tgz https://download.docker.com/linux/static/stable/x86_64/docker-' . getenv('VER') . '.tgz'))
+      ->addTask($this->taskExec('tar -xz -C /tmp -f /tmp/docker-' . getenv('VER') . '.tgz'))
       ->addTask($this->taskExec('mv /tmp/docker/* /usr/bin'));
 
     return $collection->run();
