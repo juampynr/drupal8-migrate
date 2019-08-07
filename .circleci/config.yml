@@ -20,12 +20,12 @@ jobs:
             vendor/bin/robo docker:install-client
             cp .circleci/config/settings.local.php web/sites/default/settings.local.php
       - run:
-        name: Download and install the latest Drupal 7 database
-        command: |
-          php vendor/juampynr/dropbox-api/dropbox-download.php drupal7.sql drupal7.sql
-          vendor/bin/drush sql-drop --database=drupal7 --yes
-          vendor/bin/drush sql-cli --database=drupal7 < drupal7.sql
-          mv --force drupal7.sql scripts/database/dumps/
+          name: Download and install the latest Drupal 7 database
+          command: |
+            php vendor/juampynr/dropbox-api/dropbox-download.php drupal7.sql drupal7.sql
+            vendor/bin/drush sql-drop --database=drupal7 --yes
+            vendor/bin/drush sql-cli --database=drupal7 < drupal7.sql
+            mv --force drupal7.sql scripts/database/dumps/
       - run:
           name: Replace the full database by the config database
           command: |
@@ -54,12 +54,12 @@ jobs:
 workflows:
   version: 2
   migration:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * *"
+#          filters:
+#            branches:
+#              only:
+#                - master
     jobs:
       - migrate
