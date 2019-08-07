@@ -31,7 +31,7 @@ jobs:
           command: |
             mysqldump -h127.0.0.1 -uroot -proot drupal8_config > drupal8_config.sql
             vendor/bin/drush sql-drop --yes
-            vendor/bin/drush sql-cli < ukids8_config.sql
+            vendor/bin/drush sql-cli < drupal8_config.sql
       - run:
           name: Import configuration and run database updates
           command: |
@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Dump the resulting database, build a Docker image, and push it to Quay.io
           command: |
-            vendor/bin/drush sql-dump > scripts/database/dumps/ukids8.sql
+            vendor/bin/drush sql-dump > scripts/database/dumps/drupal8.sql
             vendor/bin/drush sql-dump --database=drupal7 > scripts/database/dumps/drupal7.sql
             vendor/bin/robo database:build-image master ${CIRCLE_BRANCH}
             vendor/bin/robo database:push-image master ${CIRCLE_BRANCH}
