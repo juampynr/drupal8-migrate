@@ -13,8 +13,45 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Migration commands will go here
-          command: echo "Hello!"
+          name: Install Docker client
+          command: |
+            set -x
+            VER="18.09.3"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+      - run:
+          name: Configure environment
+          command: |
+            composer install
+            cp .circleci/config/settings.local.php web/sites/default/settings.local.php
+      - run:
+          name: Replace the full database by the config database
+          command: |
+            mysqldump -h127.0.0.1 -uroot -proot drupal8_config > drupal8_config.sql
+            vendor/bin/drush sql-drop --yes
+            vendor/bin/drush sql-cli < ukids8_config.sql
+      - run:
+          name: Import configuration and run database updates
+          command: |
+            vendor/bin/drush --yes updatedb
+            vendor/bin/drush --yes config:import
+            vendor/bin/drush cache:rebuild
+      - run:
+          name: Dump the updated config database so it can be added to the Docker image later
+          command: |
+            vendor/bin/drush sql-dump > scripts/database/dumps/drupal8_config.sql
+      - run:
+          name: Run content migration
+          command: |
+            vendor/bin/drush migrate:import -vvv --feedback=100 --execute-dependencies --tag=Content
+      - run:
+          name: Dump the resulting database, build a Docker image, and push it to Quay.io
+          command: |
+            vendor/bin/drush sql-dump > scripts/database/dumps/ukids8.sql
+            vendor/bin/drush sql-dump --database=drupal7 > scripts/database/dumps/drupal7.sql
+            vendor/bin/robo database:build-image master ${CIRCLE_BRANCH}
+            vendor/bin/robo database:push-image master ${CIRCLE_BRANCH}
 
 workflows:
   version: 2

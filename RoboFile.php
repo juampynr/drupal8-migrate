@@ -57,23 +57,4 @@ class RoboFile extends \Robo\Tasks {
     return $collection->run();
   }
 
-  /**
-   * Dumps databases to the host machine into scripts/database/dumps.
-   *
-   * Assumes that there is a container running as drupal8_migrate which
-   * has the databases.
-   *
-   * @return \Robo\Task\Base\Exec[]
-   *   An array of tasks.
-   */
-  public function databaseDumpToHost() {
-    $tasks = [];
-    $tasks[] = $this->taskExec('docker inspect -f \'{{.State.Running}}\' drupal8_migrate');
-    $tasks[]= $this->taskParallelExec()
-      ->process('docker exec drupal8_migrate /usr/bin/mysqldump -u root --password=root drupal7 > scripts/database/dumps/drupal7.sql')
-      ->process('docker exec drupal8_migrate /usr/bin/mysqldump -u root --password=root drupal8_config > scripts/database/dumps/drupal8_config.sql')
-      ->process('docker exec drupal8_migrate /usr/bin/mysqldump -u root --password=root drupal8 > scripts/database/dumps/drupal8.sql');
-    return $tasks;
-  }
-
 }
