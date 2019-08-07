@@ -58,4 +58,22 @@ class RoboFile extends \Robo\Tasks {
     return $collection->run();
   }
 
+  /**
+   * Task to install the Docker client.
+   *
+   * @return \Robo\Result
+   *   The result of the collection of tasks.
+   */
+  public function dockerInstallClient() {
+    $collection = $this->collectionBuilder();
+
+    $collection->addTask($this->taskExec('set -x'))
+      ->addTask($this->taskExec('VER="18.09.3"'))
+      ->addTask($this->taskExec('curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz'))
+      ->addTask($this->taskExec('tar -xz -C /tmp -f /tmp/docker-$VER.tgz'))
+      ->addTask($this->taskExec('mv /tmp/docker/* /usr/bin'));
+
+    return $collection->run();
+  }
+
 }

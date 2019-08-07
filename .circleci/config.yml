@@ -16,11 +16,7 @@ jobs:
       - run:
           name: Install Docker client
           command: |
-            set -x
-            VER="18.09.3"
-            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
+            vendor/bin/robo docker:install-client
       - run:
           name: Configure environment
           command: |
@@ -58,12 +54,12 @@ jobs:
 workflows:
   version: 2
   migration:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * *"
+#          filters:
+#            branches:
+#              only:
+#                - master
     jobs:
       - migrate
