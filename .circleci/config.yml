@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+  migrate:
+    working_directory: /var/www/html
+    docker:
+      - image: juampynr/drupal8ci:latest
+      - image: quay.io/juampynr/drupal8_migrate:master
+        auth:
+          username: $QUAY_USERNAME_V2
+          password: $QUAY_PASSWORD_V2
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Migration commands will go here
+          command: echo "Hello!"
+
+workflows:
+  version: 2
+  migration:
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * *"
+#          filters:
+#            branches:
+#              only:
+#                - master
+    jobs:
+      - migrate
