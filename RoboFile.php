@@ -41,6 +41,9 @@ class RoboFile extends \Robo\Tasks {
   /**
    * Task to push a database image to Quay.io.
    *
+   * Requires that docker login has been executed previously in order to
+   * have push permission.
+   *
    * @param $tag_name
    *   The image tag name to use. Usually a Git branch name.
    *
@@ -50,8 +53,6 @@ class RoboFile extends \Robo\Tasks {
   public function databasePushImage($tag_name) {
     $collection = $this->collectionBuilder();
 
-    $collection->addTask($this->taskExec('docker login quay.io'));
-    $collection->addTask($this->taskExec('sleep 2'));
     $collection->addTask($this->taskExec("docker push {$this->quayRepository}:$tag_name"));
 
     return $collection->run();
