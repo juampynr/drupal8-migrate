@@ -14,13 +14,10 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Install Docker client
-          command: |
-            vendor/bin/robo docker:install-client
-      - run:
           name: Configure environment
           command: |
             composer install
+            vendor/bin/robo docker:install-client
             cp .circleci/config/settings.local.php web/sites/default/settings.local.php
       - run:
           name: Replace the full database by the config database
