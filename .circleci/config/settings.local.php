@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Local settings for CircleCI jobs.
+ */
+
 $databases['default']['default'] = [
   'database' => 'drupal8',
   'username' => 'root',
