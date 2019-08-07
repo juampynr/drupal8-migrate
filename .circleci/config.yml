@@ -7,8 +7,8 @@ jobs:
       - image: juampynr/drupal8ci:latest
       - image: quay.io/juampynr/drupal8_migrate:master
         auth:
-          username: $QUAY_USERNAME_V2
-          password: $QUAY_PASSWORD_V2
+          username: $QUAY_USERNAME
+          password: $QUAY_PASSWORD
     steps:
       - checkout
       - setup_remote_docker:
