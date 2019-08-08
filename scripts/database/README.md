@@ -9,38 +9,57 @@ This Dockerfile creates and populates 3 databases:
   imported, and configuration migrations have been executed.
 * drupal8: the full Drupal 8 database, where content migrations have been executed using the drupal8_config database. 
 
-# Usage
+# Building the image for the first time
 
-Assuming that you want to update any of the above databases:
+## Dump the Drupal 7 database
+Create a database dump of the source database and save it to `scripts/database/dumps/drupal7.sql`.
 
-1. Pull this image locally and start a container:
+## Create, configure, and dump the configuration database
+Install Drupal 8, export configuration, install the migrate modules, generate migrations, 
+run configuration migrations, and export the resulting configuration. Then create a database
+dump and save it to `scripts/database/dumps/drupal8.sql`. If you need help on these steps,
+have a look at [An Overview for Migrating Drupal Sites to 8](https://www.lullabot.com/articles/overview-migrating-drupal-sites-8).
 
-```bash
-docker run -d --rm --name drupal8_migrate quay.io/juampynr/drupal8_migrate:master
+## Dump the configuration database as the full database
+Unless you have a small site and want to run the content migration locally
+via `/vendor/bin/robo migrate:content`, create a database dump of the
+configuration database and save it to `scripts/database/dumps/drupal8.sql`. CircleCI
+will update this file in the nightly migration. 
+
+## Create a repository at Quay.io
+
+Create a repository at Quay.io via the web interface. There is no need to link the repository to a GitHub trigger.
+Just create the repository.
+
+## Authenticate, build, and push the image
+
+```
+docker login quay.io
+vendor/bin/robo database:build-image master
+vendor/bin/robo database:build-image master
 ```
 
-2. Download databases into the `scripts/database/dumps` directory:
+## Try pulling the image
+
+Once the tag is available at Quay.io (monitor the web interface to know this), then pull the image locally
+and test that it has the databases. Here is an example where I am starting a container at port 3307 (3306
+is the default MySQL port but I already have MySQL running at the host machine):
 
 ```bash
-docker exec drupal8_migrate /usr/bin/mysqldump -u root --password=root drupal7 > scripts/database/dumps/drupal7.sql
-docker exec drupal8_migrate /usr/bin/mysqldump -u root --password=root drupal8_config > scripts/database/dumps/drupal8_config.sql
-docker exec drupal8_migrate /usr/bin/mysqldump -u root --password=root drupal8 > scripts/database/dumps/drupal8.sql
+docker pull quay.io/juampynr/drupal8_migrate:master
+docker run -d --name drupal8_migrate -p 3307:3306 quay.io/juampynr/drupal8_migrate:master
+mysql -h127.0.0.1 --port=3307 -uroot -p -e 'show databases;'
+Enter password: 
++--------------------+
+| Database           |
++--------------------+
+| drupal7            |
+| drupal8            |
+| drupal8_config     |
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
 ```
 
-3. Overwrite any of the above database dumps with the one that you want to update.
-
-4. Build a new image and give it a tag name. Use 'master' if you want to overwrite the image that the
-team and CircleCI use.
-
-```bash
-vendor/bin/robo database:build-image some-tag
-```
-
-5. Push the resulting image to Docker Hub:
-
-```bash
-vendor/bin/robo database:push-image master
-``` 
-
-6. Wait for the tag to be available at Docker Hub by monitoring
-https://quay.io/repository/juampynr/drupal8_migrate:some-tag
+Next, adjust the image at `.circleci/config.yml` so CircleCI will use it for the migration job.
