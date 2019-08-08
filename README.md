@@ -9,4 +9,5 @@ added to a Docker image and pushed to Quay.io.
 * Here is the [list of past CircleCI jobs](https://circleci.com/gh/juampynr/drupal8-migrate).
 * Here is the [list of Docker image tags](https://quay.io/repository/juampynr/drupal8_migrate?tab=history).
 
-Further details on how this repository works will be published soon in an article at the Lullabot blog.
+Have a look at the [scripts/database](scripts/database) directory for instructions on
+how to build the first Docker image that hosts the set of databases.
