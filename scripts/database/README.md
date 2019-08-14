@@ -36,7 +36,7 @@ Just create the repository.
 ```
 docker login quay.io
 vendor/bin/robo database:build-image master
-vendor/bin/robo database:build-image master
+vendor/bin/robo database:push-image master
 ```
 
 ## Try pulling the image
